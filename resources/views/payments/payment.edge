@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/resources/css/app.css" rel="stylesheet" />
+    <title>
+      {{ title }}
+    </title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-8 col-ms-4 center-container">
+          <h1>
+            {{ titleH1 }}
+          </h1>
+        </div>
+        <div class="col-lg-4 col-ms-8 text-center">
+          <img src="/resources/images/logo.jpg" style="max-height:200px;" />
+        </div>
+      </div>
+
+      <!-- Mostrar mensaje de error -->
+      @if (session.get('error'))
+        <div class="alert alert-danger">
+          {{ session.get('error') }}
+        </div>
+      @endif
+        
+      <form action="{{ actionUrl }}" method="POST">
+        <!-- ID (Only visible in Edit) -->
+        @if ( session.get('formData')?.id || payment?.id)
+          <div class="mb-3">
+            <label for="id" class="form-label">Payment ID</label>
+            <input
+              type="text"
+              id="id"
+              name="id"
+              class="form-control"
+              value="{{ session.get('formData')?.id || payment?.id }}"
+              readonly
+            />
+          </div>
+        @endif
+          
+        <div class="mb-3">
+          <label for="names" class="form-label">Customer</label>
+          <input
+            type="text"
+            name="names"
+            id="names"
+            class="form-control"
+            value="{{ customer.names }} {{ customer.lastNames }}"
+            readonly
+            disabled
+          />
+        </div>
+        <div class="mb-3">
+          <label for="paymentDate" class="form-label">Payment Date</label>
+          <input
+            type="date"
+            name="paymentDate"
+            id="paymentDate"
+            class="form-control"
+            value="{{ session.get('formData')?.paymentDate ? session.get('formData')?.paymentDate : payment?.paymentDate ? payment?.paymentDate : '' }}"
+            min='{{ dateRange.min }}'
+            max='{{ dateRange.max }}'
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="paymentMethod" class="form-label">Payment Method</label>
+          <select
+            name="paymentMethod"
+            id="paymentMethod"
+            class="form-control"
+            value="{{ session.get('formData')?.paymentMethod || payment?.paymentMethod || 0 }}"
+            required
+          >
+            <option value="0" selected>
+              Cash
+            </option>
+            <option value="1">
+              TDC
+            </option>
+            <option value="2">
+              TDD
+            </option>
+            <option value="3">
+              QR
+            </option>
+            <option value="4">
+              Transfer
+            </option>
+            <option value="5">
+              Bank Draft
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount</label>
+          <input
+            type="number"
+            name="amount"
+            id="amount"
+            class="form-control"
+            value="{{ session.get('formData')?.amount || payment?.amount || '' }}"
+            placeholder='0.00'
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="paymentConfirmed" class="form-label">Payment Confirmed</label>
+          <input
+            type="date"
+            name="paymentConfirmed"
+            id="paymentConfirmed"
+            class="form-control"
+            value="{{ session.get('formData')?.paymentConfirmed || payment?.paymentConfirmed || '' }}"
+            min='{{ dateRange.min }}'
+            max='{{ dateRange.max }}'
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">{{ submitValue }}</button>
+        <a href="/customers/{{ customer.id }}/payments" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js">
+      
+    </script>
+  </body>
+</html>

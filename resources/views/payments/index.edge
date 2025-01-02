@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/resources/css/app.css" rel="stylesheet" />
+    <title>
+      {{ title || 'Client Flow' }}
+    </title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-8 col-ms-4 center-container">
+          <h1>
+            Payment List
+          </h1>
+        </div>
+        <div class="col-lg-4 col-ms-8 center-container">
+          <img src="/resources/images/logo.jpg" style="max-height:200px;" />
+        </div>
+        <div class="col-lg-8 col-ms-4 center-container">
+          <h4>
+            {{ customer?.idRuc }} | {{ customer?.names }} {{ customer?.lastNames }}
+          </h4>
+        </div>
+      </div>
+      <div>
+        <a href="/customers/{{ customer.id }}/payments/create" class="btn btn-primary mb-3">Add payment</a>
+        <a href="/customers" class="btn btn-info mb-3">Customer List</a>
+      </div>
+
+      <!-- Buscador -->
+      <form
+        method="GET"
+        action="?search='search'&sortBy=id&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}"
+        class="mb-3"
+      >
+        <div class="row">
+          <div class="col-4">
+            <input
+              type="date"
+              name="startDate"
+              class="form-control"
+              value="{{ startDate ? startDate : filterDateRange.startDate }}"
+            />
+          </div>
+          <div class="col-4">
+            <input
+              type="date"
+              name="endDate"
+              class="form-control"
+              value="{{ endDate ? endDate : filterDateRange.endDate }}"
+            />
+          </div>
+          <div class="col-2">
+            <button style="width: 100%; margin-top: 0 !important;" type="submit" class="btn btn-info mt-2">Search</button>
+          </div>
+          <div class="col-2">
+            <a
+              style="width: 100%; margin-top: 0 !important;"
+              href="/customers/{{ customer.id }}/payments"
+              class="btn btn-secondary mt-2"
+            >Clear Filter</a>
+          </div>
+        </div>
+      </form>
+
+      <!-- Tabla -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>
+              <a href="?sortBy=id&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">#</a>
+            </th>
+            <th>
+              <a href="?sortBy=paymentDate&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Payment Date</a>
+            </th>
+            <th>
+              <a href="?sortBy=paymentMethod&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Payment Method</a>
+            </th>
+            <th>
+              <a href="?sortBy=amount&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Amount</a>
+            </th>
+            <th>
+              <a href="?sortBy=paymentConfirmed&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Payment Confirmed</a>
+            </th>
+            <th>
+              Accions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @each(payment in payments)
+            <!-- Aquí se usa payments -->
+            <tr>
+              <td>
+                {{ payment.id }}
+              </td>
+              <td>
+                {{ payment.paymentDate }}
+              </td>
+              <td>
+                {{ payment.paymentMethod }}
+              </td>
+              <td>
+                {{ payment.amount }}
+              </td>
+              <td>
+                {{ payment.paymentConfirmed }}
+              </td>
+              <td style="width: 30%;">
+                <a
+                  href="/customers/{{ customer.id }}/payments/edit/{{ payment.id }}"
+                  class="btn btn-warning btn-sm"
+                >Show/Edit Payment</a>
+                <a
+                  href="/customers/{{ customer.id }}/payments/confirm/{{ payment.id }}"
+                  class="btn btn-primary btn-sm"
+                >Confirm Payment</a>
+              </td>
+            </tr>
+          @endeach
+        </tbody>
+      </table>
+    </div>
+
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js">
+      
+    </script>
+  </body>
+</html>

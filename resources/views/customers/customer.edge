@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/resources/css/app.css" rel="stylesheet" />
+    <title>
+      {{ title }}
+    </title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-lg-8 col-ms-4 center-container">
+          <h1>
+            {{ titleH1 }}
+          </h1>
+        </div>
+        <div class="col-lg-4 col-ms-8 text-center">
+          <img src="/resources/images/logo.jpg" style="max-height:200px;" />
+        </div>
+      </div>
+
+      <!-- Mostrar mensaje de error -->
+      @if (session.get('error'))
+        <div class="alert alert-danger">
+          {{ session.get('error') }}
+        </div>
+      @endif
+      
+      <form action="{{ actionUrl }}" method="POST">
+        <!-- ID (Only visible in Edit) -->
+        @if ( session.get('formData')?.id || customer?.id)
+          <div class="mb-3">
+            <label for="id" class="form-label">Customer ID</label>
+            <input
+              type="text"
+              id="id"
+              name="id"
+              class="form-control"
+              value="{{ session.get('formData')?.id || customer?.id }}"
+              readonly
+            />
+          </div>
+        @endif
+        
+        <div class="mb-3">
+          <label for="names" class="form-label">Names</label>
+          <input
+            type="text"
+            name="names"
+            id="names"
+            class="form-control"
+            value="{{ session.get('formData')?.names || customer?.names || '' }}"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="lastNames" class="form-label">Last Names</label>
+          <input
+            type="text"
+            name="lastNames"
+            id="lastNames"
+            class="form-control"
+            value="{{ session.get('formData')?.lastNames || customer?.lastNames || '' }}"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="idRuc" class="form-label">ID/RUC</label>
+          <input
+            type="text"
+            name="idRuc"
+            id="idRuc"
+            class="form-control"
+            value="{{ session.get('formData')?.idRuc || customer?.idRuc || '' }}"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input
+            type="text"
+            name="phone"
+            id="phone"
+            class="form-control"
+            value="{{ session.get('formData')?.phone || customer?.phone || '' }}"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="form-control"
+            value="{{ session.get('formData')?.email || customer?.email || '' }}"
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">{{ submitValue }}</button>
+        <a href="/customers" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js">
+      
+    </script>
+  </body>
+</html>

@@ -1,84 +1,108 @@
 # Client Flow
 
-Client Flow es una aplicación diseñada para gestionar clientes y automatizar el registro de pagos pendientes de cobro de manera mensual. Construida con AdonisJS versión 7, utiliza SQLite como base de datos y está preparada para ejecutarse con Node.js versión 22.0.0.
+Client Flow is an application designed to manage clients and automate the recording of payments due on a monthly basis. Built with AdonisJS version 7, it uses SQLite as database and is prepared to run on Node.js version 22.0.0.
 
-## Requisitos previos
+## Prerequisites.
 
-- **Node.js**: Asegúrate de tener instalada la versión 22.0.0 de Node.js. Puedes verificar tu versión actual con:
+- Node.js\*\*: Make sure you have Node.js version 22.0.0 installed. You can check your current version with
 
   ```bash
   node -v
   ```
 
-  Si necesitas instalar o actualizar Node.js, descárgalo desde la [página oficial](https://nodejs.org/).
+  If you need to install or update Node.js, download it from the [official website](https://nodejs.org/).
 
-- **npm**: Viene incluido con Node.js. Verifica su versión con:
+- SQLite\*\*: This application uses SQLite as database.
 
-  ```bash
-  npm -v
-  ```
+## Installation
 
-- **SQLite**: Esta aplicación utiliza SQLite como base de datos.
-
-## Instalación
-
-1. **Clona el repositorio**:
+1. **Clone the repository**:
 
    ```bash
    git clone https://github.com/jhonriv/client-flow.git
    cd client-flow
    ```
 
-2. **Instala las dependencias**:
+2. **Install the dependencies**:
 
    ```bash
    npm install
    ```
 
-3. **Configura las variables de entorno**:
+3. **Set the environment variables**:
 
-   Copia el archivo de ejemplo `.env.example` y renómbralo a `.env`.
+   Copy the example file `.env.example` and rename it to `.env`.
 
    ```bash
    cp .env.example .env
    ```
 
-   Asegúrate de que las configuraciones en `.env` sean correctas, especialmente las relacionadas con la base de datos SQLite.
+   Make sure the settings in `.env` are correct, especially those related to the SQLite database.
 
-## Uso de SQLite
+## Using SQLite
 
-La aplicación está configurada para utilizar SQLite como base de datos por defecto. No se requiere configuración adicional si estás utilizando SQLite. Asegúrate de que el archivo de base de datos (`database.sqlite`) esté presente en la carpeta `database` o que la configuración en el archivo `.env` apunte correctamente a su ubicación.
+The application is configured to use SQLite as the default database. No additional configuration is required if you are using SQLite. Make sure that the database file (`database.sqlite`) is present in the `database` folder or that the configuration in the `.env` file points correctly to its location.
 
-## Migraciones de base de datos
+## Database migrations
 
-Antes de ejecutar la aplicación, es necesario ejecutar las migraciones para configurar las tablas de la base de datos:
+Before running the application, it is necessary to run the migrations to configure the database tables:
 
 ```bash
 node ace migration:run
 ```
 
-## Ejecución de la aplicación
+## Running the application
 
-Una vez configurada la base de datos y ejecutadas las migraciones, inicia el servidor de desarrollo:
+Once the database has been configured and the migrations have been executed, start the development server:
 
 ```bash
 node ace serve --watch
 ```
 
-La aplicación estará disponible en `http://localhost:3333`.
+The application will be available at `http://localhost:3333`.
 
-## Tareas programadas
+## Scheduled tasks
 
-Client Flow está diseñada para ejecutar tareas programadas que registran automáticamente los pagos pendientes de cobro mensualmente. Estas tareas se configuran utilizando `node-cron` y se ejecutan según la programación definida en el código. No se requiere configuración adicional para esta funcionalidad.
+Client Flow is designed to run scheduled tasks that automatically record payments due on a monthly basis. These tasks are configured using `node-cron` and run according to the schedule defined in the code. No additional configuration is required for this functionality.
 
-## Contribuciones
+## Contributions
 
-Si deseas contribuir al desarrollo de Client Flow, por favor, realiza un fork del repositorio, crea una rama con tus cambios y envía un pull request para su revisión.
+If you wish to contribute to the development of Client Flow, please fork the repository, create a branch with your changes and submit a pull request for review.
 
-## Licencia
+## License
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ---
 
-Para más información o soporte, por favor, contacta al desarrollador principal.
+For more information or support, please contact the lead developer.
+
+## Screenshots
+
+### Main Page
+
+![Home Page](resources/images/captures/customer-list.png)
+
+### Main page using filtering
+
+![Home Page Filtering](resources/images/captures/customer-list-filtered.png)
+
+### Add Customer
+
+![Customer Registration](resources/images/captures/customer-add.png)
+
+### Edit Customer
+
+![Customer Edit](resources/images/captures/customer-edit.png)
+
+### Show Customer Payments
+
+![Show Payments](resources/images/captures/customer-show-payments.png)
+
+### Add new customer payment
+
+![Register Payment](resources/images/captures/customer-add-payment.png)
+
+### Edit Payment
+
+![Customer Payment Edit](resources/images/captures/customer-edit-payment.png)

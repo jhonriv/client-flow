@@ -34,7 +34,8 @@ export default defineConfig({
     () => import('@adonisjs/vite/vite_provider'),
     () => import('@adonisjs/shield/shield_provider'),
     () => import('@adonisjs/static/static_provider'),
-    () => import('@adonisjs/lucid/database_provider')
+    () => import('@adonisjs/lucid/database_provider'),
+    () => import('@adonisjs/i18n/i18n_provider'),
   ],
 
   /*
@@ -79,6 +80,10 @@ export default defineConfig({
     },
     {
       pattern: 'public/**',
+      reloadServer: false,
+    },
+    {
+      pattern: 'resources/lang/**/*.json',
       reloadServer: false,
     },
   ],

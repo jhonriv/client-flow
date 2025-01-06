@@ -1,0 +1,64 @@
+{
+  "titleHead": "Flujo de clientes",
+  "search": "Buscar",
+  "actions": "Acciones",
+  "names": "Nombres",
+  "lastNames": "Apellidos",
+  "clearFilter": "Limpiar filtro",
+  "cancel": "Cancelar",
+  "idRuc": "Cédula/RUC",
+  "phone": "Teléfono",
+  "email": "Email",
+
+  "customers": {
+    "name": "Cliente",
+    "customerList": "Lista de clientes",
+    "addCustomer": "Agregar cliente",
+    "showEditCustomer": "Mostrar/Editar cliente",
+    "customerId": "ID del cliente",
+    "createTitle": "Registrar cliente",
+    "createTitleH1": "Registrar un nuevo cliente",
+    "editTitle": "Actualizar cliente",
+    "editTitleH1": "Editar detalles del cliente",
+    "errors": {
+      "idRucExists": "El ID/RUC { idRuc } ya existe",
+      "customerNotFound": "Cliente no encontrado"
+    }
+  },
+
+  "payments": {
+    "showPayments": "Mostrar pagos",
+    "addPay": "Agregar pago",
+    "paymentList": "Lista de pagos",
+    "addPayment": "Agregar pago",
+    "showEditPayment": "Mostrar/Editar pago",
+    "confirmPayment": "Confirmar pago",
+    "paymentId": "ID del pago",
+    "paymentDate": "Fecha del pago",
+    "paymentMethod": {
+      "title": "Metodo de pago",
+      "unknown": "Desconocido",
+      "0": "Efectivo",
+      "1": "Transferencia",
+      "2": "Tarjeta de Debito",
+      "3": "Tarjeta de Credito",
+      "4": "Cheque Bancario"
+    },
+    "createTitle": "Registrar pago",
+    "createTitleH1": "Registrar un nuevo pago",
+    "editTitle": "Actualizar pago",
+    "editTitleH1": "Editar detalles del pago",
+    "amount": "Monto",
+    "description": "Descripción",
+    "paymentConfirmed": "Pago confirmado",
+    "errors": {
+      "paymentExists": "El pago para la fecha { paymentDate } ya existe",
+      "paymentNotFound": "Pago no encontrado"
+    }
+  },
+
+  "not_found_page": {
+    "message": "Oops! La página que estabas buscando no se encuentra.",
+    "goBackHome": "Ir a la página principal"
+  }
+}

@@ -4,15 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/resources/css/app.css" rel="stylesheet" />
     <title>
-      {{ title || 'Client Flow' }}
+      Customer Flow
     </title>
   </head>
   <body>
     <div class="container mt-5">
-      @yield('content')
-        <!-- Aquí se insertará el contenido de cada vista -->
+      <div class="row">
+        <div class="col-lg-8 col-ms-4 center-container">
+          <h1>
+            Customer Flow
+          </h1>
+        </div>
+        <div class="col-lg-4 col-ms-8 text-center">
+          <img src="/resources/images/logo.jpg" style="max-height:200px;" />
+        </div>
       </div>
+
+      <form method="POST" action="/set-language">
+        <label for="lang">Please, select default language / Por favor, seleccione el lenguaje por defecto</label>
+        <select name="lang" onchange="this.form.submit()" class="form-select" required>
+          <option value="" {{ !currentLang ? 'selected' : '' }}>
+            Select / Seleccione
+          </option>
+          <option value="en" {{ currentLang === 'en' ? 'selected' : '' }}>
+            English
+          </option>
+          <option value="es" {{ currentLang === 'es' ? 'selected' : '' }}>
+            Español
+          </option>
+        </select>
+      </form>
 
       <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js">
         

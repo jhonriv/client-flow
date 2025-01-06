@@ -38,13 +38,14 @@ router.use([
   () => import('@adonisjs/core/bodyparser_middleware'),
   () => import('@adonisjs/session/session_middleware'),
   () => import('@adonisjs/shield/shield_middleware'),
+  () => import('#middleware/detect_user_locale_middleware'),
 ])
 
 //cron.schedule('* * * * *', async () => {
-cron.schedule('0 0 1 * *', async () => {
+/* cron.schedule('0 0 1 * *', async () => {
   console.log('Running GeneratePendingPayments task...')
   await GeneratePendingPayments.run()
-})
+}) */
 
 /**
  * Named middleware collection must be explicitly assigned to

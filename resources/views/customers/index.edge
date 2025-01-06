@@ -6,7 +6,7 @@
     <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/resources/css/app.css" rel="stylesheet" />
     <title>
-      {{ title || 'Client Flow' }}
+      {{ t('titleHead') }}
     </title>
   </head>
   <body>
@@ -14,7 +14,7 @@
       <div class="row">
         <div class="col-lg-8 col-ms-4 center-container">
           <h1>
-            Customer List
+            {{ t('customers.customerList') }}
           </h1>
         </div>
         <div class="col-lg-4 col-ms-8 text-center">
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div>
-        <a href="/customers/create" class="btn btn-primary mb-3">Add customer</a>
+        <a href="/customers/create" class="btn btn-primary mb-3">{{ t('customers.addCustomer') }}</a>
       </div>
 
       <!-- Buscador -->
@@ -42,7 +42,7 @@
             />
           </div>
           <div class="col-2">
-            <button style="width: 100%; margin-top: 0 !important;" type="submit" class="btn btn-info mt-2">Search</button>
+            <button style="width: 100%; margin-top: 0 !important;" type="submit" class="btn btn-info mt-2">{{ t('search') }}</button>
           </div>
         </div>
       </form>
@@ -55,22 +55,22 @@
               <a href="?sortBy=id&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">#</a>
             </th>
             <th>
-              <a href="?sortBy=names&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Names</a>
+              <a href="?sortBy=names&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('names') }}</a>
             </th>
             <th>
-              <a href="?sortBy=lastNames&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Last Names</a>
+              <a href="?sortBy=lastNames&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('lastNames') }}</a>
             </th>
             <th>
-              <a href="?sortBy=idRuc&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">ID / RUC</a>
+              <a href="?sortBy=idRuc&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('idRuc') }}</a>
             </th>
             <th>
-              <a href="?sortBy=phone&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Phone</a>
+              <a href="?sortBy=phone&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('phone') }}</a>
             </th>
             <th>
-              <a href="?sortBy=email&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Email</a>
+              <a href="?sortBy=email&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('email') }}</a>
             </th>
             <th>
-              Accions
+              {{ t('actions') }}
             </th>
           </tr>
         </thead>
@@ -97,49 +97,14 @@
                 {{ customer.email }}
               </td>
               <td style="width: 30%;">
-                <a href="/customers/edit/{{ customer.id }}" class="btn btn-warning btn-sm">Show/Edit Customer</a>
-                <a href="/customers/{{ customer.id }}/payments" class="btn btn-info btn-sm">Show Payments</a>
-                <a href="/customers/{{ customer.id }}/pay" class="btn btn-primary btn-sm">Add Pay</a>
+                <a href="/customers/edit/{{ customer.id }}" class="btn btn-warning btn-sm">{{ t('customers.showEditCustomer') }}</a>
+                <a href="/customers/{{ customer.id }}/payments" class="btn btn-info btn-sm">{{ t('payments.showPayments') }}</a>
+                <a href="/customers/{{ customer.id }}/payments/create" class="btn btn-primary btn-sm">{{ t('payments.addPayment') }}</a>
               </td>
             </tr>
           @endeach
         </tbody>
       </table>
-
-      {{--        <!-- Paginación -->
-        @if (customers.meta.lastPage > 1)
-        <!-- Verificamos si hay más de una página -->
-        <div class="pagination">
-          <ul class="pagination">
-            <!-- Enlace a la página anterior -->
-            <li class="page-item {{ customers.meta.currentPage === 1 ? 'disabled' : '' }}">
-              <a
-                class="page-link"
-                href="?page={{ customers.meta.currentPage - 1 }}&search={{ search }}&sortBy={{ sortBy }}&sortOrder={{ sortOrder }}"
-              >Anterior</a>
-            </li>
-        
-            <!-- Páginas de la paginación -->
-            @for (let page = 1; page <= customers.meta.lastPage; page++)
-              <li class="page-item {{ page === customers.meta.currentPage ? 'active' : '' }}">
-                <a
-                  class="page-link"
-                  href="?page={{ page }}&search={{ search }}&sortBy={{ sortBy }}&sortOrder={{ sortOrder }}"
-                >{{ page }}</a>
-              </li>
-            @endfor
-            
-            <!-- Enlace a la siguiente página -->
-            <li class="page-item {{ customers.meta.currentPage === customers.meta.lastPage ? 'disabled' : '' }}">
-              <a
-                class="page-link"
-                href="?page={{ customers.meta.currentPage + 1 }}&search={{ search }}&sortBy={{ sortBy }}&sortOrder={{ sortOrder }}"
-              >Siguiente</a>
-            </li>
-          </ul>
-        </div>
-      @endif  --}}
-
     </div>
 
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js">

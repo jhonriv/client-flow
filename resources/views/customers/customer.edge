@@ -33,7 +33,7 @@
         <!-- ID (Only visible in Edit) -->
         @if ( session.get('formData')?.id || customer?.id)
           <div class="mb-3">
-            <label for="id" class="form-label">Customer ID</label>
+            <label for="id" class="form-label">{{ t('customers.customerId') }}</label>
             <input
               type="text"
               id="id"
@@ -46,7 +46,7 @@
         @endif
         
         <div class="mb-3">
-          <label for="names" class="form-label">Names</label>
+          <label for="names" class="form-label">{{ t('names') }}</label>
           <input
             type="text"
             name="names"
@@ -57,7 +57,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="lastNames" class="form-label">Last Names</label>
+          <label for="lastNames" class="form-label">{{ t('lastNames') }}</label>
           <input
             type="text"
             name="lastNames"
@@ -68,7 +68,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="idRuc" class="form-label">ID/RUC</label>
+          <label for="idRuc" class="form-label">{{ t('idRuc') }}</label>
           <input
             type="text"
             name="idRuc"
@@ -79,7 +79,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="phone" class="form-label">Phone</label>
+          <label for="phone" class="form-label">{{ t('phone') }}</label>
           <input
             type="text"
             name="phone"
@@ -89,7 +89,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
+          <label for="email" class="form-label">{{ t('email') }}</label>
           <input
             type="email"
             name="email"
@@ -101,7 +101,7 @@
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">{{ submitValue }}</button>
-        <a href="/customers" class="btn btn-secondary">Cancel</a>
+        <a href="/customers" class="btn btn-secondary">{{ t('cancel') }}</a>
       </form>
     </div>
 

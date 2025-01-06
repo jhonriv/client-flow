@@ -6,7 +6,7 @@
     <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/resources/css/app.css" rel="stylesheet" />
     <title>
-      {{ title || 'Client Flow' }}
+      {{ t('titleHead') }}
     </title>
   </head>
   <body>
@@ -14,7 +14,7 @@
       <div class="row">
         <div class="col-lg-8 col-ms-4 center-container">
           <h1>
-            Payment List
+            {{ t('payments.paymentList') }}
           </h1>
         </div>
         <div class="col-lg-4 col-ms-8 center-container">
@@ -27,8 +27,8 @@
         </div>
       </div>
       <div>
-        <a href="/customers/{{ customer.id }}/payments/create" class="btn btn-primary mb-3">Add payment</a>
-        <a href="/customers" class="btn btn-info mb-3">Customer List</a>
+        <a href="/customers/{{ customer.id }}/payments/create" class="btn btn-primary mb-3">{{ t('payments.addPayment') }}</a>
+        <a href="/customers" class="btn btn-info mb-3">{{ t('customers.customerList') }}</a>
       </div>
 
       <!-- Buscador -->
@@ -55,14 +55,14 @@
             />
           </div>
           <div class="col-2">
-            <button style="width: 100%; margin-top: 0 !important;" type="submit" class="btn btn-info mt-2">Search</button>
+            <button style="width: 100%; margin-top: 0 !important;" type="submit" class="btn btn-info mt-2">{{ t('search') }}</button>
           </div>
           <div class="col-2">
             <a
               style="width: 100%; margin-top: 0 !important;"
               href="/customers/{{ customer.id }}/payments"
               class="btn btn-secondary mt-2"
-            >Clear Filter</a>
+            >{{ t('clearFilter') }}</a>
           </div>
         </div>
       </form>
@@ -75,19 +75,22 @@
               <a href="?sortBy=id&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">#</a>
             </th>
             <th>
-              <a href="?sortBy=paymentDate&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Payment Date</a>
+              <a href="?sortBy=paymentDate&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('payments.paymentDate') }}</a>
             </th>
             <th>
-              <a href="?sortBy=paymentMethod&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Payment Method</a>
+              <a href="?sortBy=paymentMethod&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('payments.paymentMethod.title') }}</a>
             </th>
             <th>
-              <a href="?sortBy=amount&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Amount</a>
+              <a href="?sortBy=amount&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('payments.amount') }}</a>
             </th>
             <th>
-              <a href="?sortBy=paymentConfirmed&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">Payment Confirmed</a>
+              <a href="?sortBy=description&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('payments.description') }}</a>
             </th>
             <th>
-              Accions
+              <a href="?sortBy=paymentConfirmed&sortOrder={{ sortOrder === 'asc' ? 'desc' : 'asc' }}">{{ t('payments.paymentConfirmed') }}</a>
+            </th>
+            <th>
+              {{ t('actions') }}
             </th>
           </tr>
         </thead>
@@ -108,17 +111,20 @@
                 {{ payment.amount }}
               </td>
               <td>
+                {{ payment.description }}
+              </td>
+              <td>
                 {{ payment.paymentConfirmed }}
               </td>
               <td style="width: 30%;">
                 <a
                   href="/customers/{{ customer.id }}/payments/edit/{{ payment.id }}"
                   class="btn btn-warning btn-sm"
-                >Show/Edit Payment</a>
+                >{{ t('payments.showEditPayment') }}</a>
                 <a
                   href="/customers/{{ customer.id }}/payments/confirm/{{ payment.id }}"
                   class="btn btn-primary btn-sm"
-                >Confirm Payment</a>
+                >{{ t('payments.confirmPayment') }}</a>
               </td>
             </tr>
           @endeach

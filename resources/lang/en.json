@@ -1,0 +1,63 @@
+{
+  "titleHead": "Customer Flow",
+  "search": "Search",
+  "actions": "Actions",
+  "names": "Names",
+  "lastNames": "Last Names",
+  "clearFilter": "Clear Filter",
+  "cancel": "Cancel",
+  "idRuc": "ID/RUC",
+  "phone": "Phone",
+  "email": "Email",
+
+  "customers": {
+    "name": "Customer",
+    "customerList": "Customer List",
+    "addCustomer": "Add Customer",
+    "showEditCustomer": "Show/Edit Customer",
+    "customerId": "Customer ID",
+    "createTitle": "Register Customer",
+    "createTitleH1": "Register a New Customer",
+    "editTitle": "Update Customer",
+    "editTitleH1": "Edit Customer Details",
+    "errors": {
+      "idRucExists": "The ID/RUC { idRuc } already exists",
+      "customerNotFound": "Customer not found"
+    }
+  },
+
+  "payments": {
+    "showPayments": "Show Payments",
+    "paymentList": "Payment List",
+    "addPayment": "Add Payment",
+    "showEditPayment": "Show/Edit Payment",
+    "confirmPayment": "Confirm Payment",
+    "paymentId": "Payment ID",
+    "paymentDate": "Payment Date",
+    "paymentMethod": {
+      "title": "Payment Method",
+      "unknown": "Unknown",
+      "0": "Cash",
+      "1": "Transfer",
+      "2": "Debit Card",
+      "3": "Credit Card",
+      "4": "Bank Draft"
+    },
+    "createTitle": "Register Payment",
+    "createTitleH1": "Register a New Payment",
+    "editTitle": "Update Payment",
+    "editTitleH1": "Edit Payment Details",
+    "amount": "Amount",
+    "description": "Description",
+    "paymentConfirmed": "Payment Confirmed",
+    "errors": {
+      "paymentExists": "The payment for the date { paymentDate } already exists",
+      "paymentNotFound": "Payment not found"
+    }
+  },
+
+  "not_found_page": {
+    "message": "Oops! The page you are looking for cannot be found.",
+    "goBackHome": "Go Back Home"
+  }
+}

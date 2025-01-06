@@ -33,7 +33,7 @@
         <!-- ID (Only visible in Edit) -->
         @if ( session.get('formData')?.id || payment?.id)
           <div class="mb-3">
-            <label for="id" class="form-label">Payment ID</label>
+            <label for="id" class="form-label">{{ t('payments.paymentId') }}</label>
             <input
               type="text"
               id="id"
@@ -46,7 +46,7 @@
         @endif
           
         <div class="mb-3">
-          <label for="names" class="form-label">Customer</label>
+          <label for="names" class="form-label">{{ t('customers.name') }}</label>
           <input
             type="text"
             name="names"
@@ -58,7 +58,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="paymentDate" class="form-label">Payment Date</label>
+          <label for="paymentDate" class="form-label">{{ t('payments.paymentDate') }}</label>
           <input
             type="date"
             name="paymentDate"
@@ -71,7 +71,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="paymentMethod" class="form-label">Payment Method</label>
+          <label for="paymentMethod" class="form-label">{{ t('payments.paymentMethod.title') }}</label>
           <select
             name="paymentMethod"
             id="paymentMethod"
@@ -80,27 +80,24 @@
             required
           >
             <option value="0" selected>
-              Cash
+              {{ t('payments.paymentMethod.0') }}
             </option>
             <option value="1">
-              TDC
+              {{ t('payments.paymentMethod.1') }}
             </option>
             <option value="2">
-              TDD
+              {{ t('payments.paymentMethod.2') }}
             </option>
             <option value="3">
-              QR
+              {{ t('payments.paymentMethod.3') }}
             </option>
             <option value="4">
-              Transfer
-            </option>
-            <option value="5">
-              Bank Draft
+              {{ t('payments.paymentMethod.4') }}
             </option>
           </select>
         </div>
         <div class="mb-3">
-          <label for="amount" class="form-label">Amount</label>
+          <label for="amount" class="form-label">{{ t('payments.amount') }}</label>
           <input
             type="number"
             name="amount"
@@ -113,7 +110,17 @@
           />
         </div>
         <div class="mb-3">
-          <label for="paymentConfirmed" class="form-label">Payment Confirmed</label>
+          <label for="description" class="form-label">{{ t('payments.description') }}</label>
+          <textarea
+            name="description"
+            rows="5"
+            id="description"
+            class="form-control"
+            value="{{ session.get('formData')?.description || customer?.description || '' }}"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="paymentConfirmed" class="form-label">{{ t('payments.paymentConfirmed') }}</label>
           <input
             type="date"
             name="paymentConfirmed"
@@ -127,7 +134,7 @@
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">{{ submitValue }}</button>
-        <a href="/customers/{{ customer.id }}/payments" class="btn btn-secondary">Cancel</a>
+        <a href="/customers/{{ customer.id }}/payments" class="btn btn-secondary">{{ t('cancel') }}</a>
       </form>
     </div>
 

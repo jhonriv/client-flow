@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.date('payment_confirmed').nullable()
       table.integer('payment_method').notNullable() // 0 = cash, 1 = TDC, 2 = TDD, 3 = QR, 4 = transfer, 5 = bank draft
       table.decimal('amount', 12, 2).notNullable()
+      table.string('description').nullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

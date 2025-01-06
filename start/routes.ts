@@ -13,7 +13,23 @@ import GeneratePendingPayments from '#tasks/generate_pending_payments'
 import { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
 
-router.get('/', [CustomersController, 'index'])
+router.get('/', ({ view, response, session }: HttpContext) => {
+  const currentLang = session.get('locale') || undefined
+
+  if (currentLang) return response.redirect('/customers')
+  return view.render('layouts/main')
+})
+
+router.get('/set-language', ({ view }: HttpContext) => {
+  return view.render('layouts/main')
+})
+
+router.post('/set-language', async ({ request, response, session, i18n }) => {
+  const lang = request.input('lang') || 'en'
+  i18n.switchLocale(lang)
+  session.put('locale', lang)
+  response.redirect('/customers')
+})
 
 router
   .group(() => {

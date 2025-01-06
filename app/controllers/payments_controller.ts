@@ -2,30 +2,34 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Payment from '#models/payment'
 import Customer from '#models/customer'
 import { DateTime } from 'luxon'
+import { I18n } from '@adonisjs/i18n'
 
+/** Gets the previous date for 3 months */
 const minus3Months = () => {
   const d = new Date()
   d.setMonth(d.getMonth() - 3)
   return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`
 }
 
+/** Gets the current date */
 const todayFormat = () => {
   const d = new Date()
   return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')}`
 }
 
+/** Date range for the last 3 months */
 const dateRange = { min: minus3Months(), max: todayFormat() }
 
 export default class PaymentsController {
-  /**
-   * Display a list of all payments
-   */
-  public async index({ params, request, view, session }: HttpContext) {
+  /** Display a list of all payments */
+  public async index({ params, request, view, session, i18n }: HttpContext) {
     session.forget('error')
     session.forget('formData')
     const customerId = params.customerId
+
+    // Get the customer or return 404
     const customer = await Customer.find(customerId)
-    if (!customer) return view.render('errors/404')
+    if (!customer) return view.render('pages/errors/not_found')
 
     const startDate = request.input('startDate') || undefined
     const endDate = request.input('endDate') || undefined
@@ -34,18 +38,17 @@ export default class PaymentsController {
 
     const query = Payment.query().where('customer_id', customerId)
 
-    // Filtrado por nombre, cédula/RUC, o teléfono
-    console.log('startDate', startDate, 'endDate', endDate)
+    // Filter by payment date by range
     if (startDate && endDate) {
       query.where((builder) => {
         builder.where('payment_date', '>=', startDate).andWhere('payment_date', '<=', endDate)
       })
     }
 
-    // Ordenación
+    // Order
     query.orderBy(sortBy, sortOrder)
 
-    // Obtener los resultados con paginación
+    // Get the results
     let out = await query.exec()
     //console.log('payments', out)
 
@@ -58,18 +61,21 @@ export default class PaymentsController {
           ? payment.paymentConfirmed.toFormat('dd-MM-yyyy')
           : '',
         amount: payment.amount.toLocaleString('es-PY', { style: 'currency', currency: 'PYG' }),
-        paymentMethod: this.paymentMethodName(payment.paymentMethod),
+        description: payment.description || '',
+        paymentMethod:
+          this.paymentMethodName(payment.paymentMethod, i18n) ||
+          i18n.t('payments.paymentMethods.unknown'),
       }
     })
 
+    // Get the filter date range
     const filterDateRange = {
       startDate: DateTime.now().startOf('month').toFormat('yyyy-MM-dd'),
       endDate: DateTime.now().endOf('month').toFormat('yyyy-MM-dd'),
     }
 
-    // Pasar los datos a la vista
+    // Render the view
     return view.render('payments/index', {
-      title: 'Client Flow',
       customer,
       payments,
       filterDateRange,
@@ -79,28 +85,26 @@ export default class PaymentsController {
     })
   }
 
-  /**
-   * Display form to create a new payment
-   */
-  public async create({ params, view }: HttpContext) {
+  /** Display form to create a new payment */
+  public async create({ params, view, i18n }: HttpContext) {
     const customerId = params.customerId
+
+    // Get the customer or return 404
     const customer = await Customer.find(customerId)
-    if (!customer) return view.render('errors/404')
+    if (!customer) return view.render('pages/errors/not_found')
 
     return view.render('payments/payment', {
       customer,
       dateRange,
-      title: 'Register Payment',
-      titleH1: 'Register a New Payment',
+      title: i18n.t('payments.createTitle'),
+      titleH1: i18n.t('payments.createTitleH1'),
       actionUrl: `/customers/${customerId}/payments/store`,
-      submitValue: 'Register Payment',
+      submitValue: i18n.t('payments.createTitle'),
     })
   }
 
-  /**
-   * Handle form submission for the create action
-   */
-  public async store({ params, request, response, session }: HttpContext) {
+  /** Handle form submission for the create action */
+  public async store({ params, request, response, session, i18n }: HttpContext) {
     const customerId = params.customerId
     let data = request.only(['paymentDate', 'paymentConfirmed', 'paymentMethod', 'amount'])
     let payment = {
@@ -110,9 +114,7 @@ export default class PaymentsController {
       customerId,
     }
 
-    //console.log('payment', payment)
-
-    // Buscar si el payment ya existe en la base de datos
+    // Search for existing payment
     const existingPayment = await Payment.query()
       .where('customer_id', customerId)
       .andWhere('payment_date', data.paymentDate)
@@ -120,36 +122,37 @@ export default class PaymentsController {
       .andWhere('amount', data.amount)
       .first()
     if (existingPayment) {
-      // Agrega un mensaje de error en la sesión
-      session.put('error', `The payment for the date "${data.paymentDate}" already exists.`)
-      // Reenvía los datos a la vista
+      // Add an error message to the session
+      session.put('error', i18n.t('payments.errors.paymentExists'))
+      // Resend the form data
       session.put('formData', data)
-      return response.redirect('back') // Vuelve al formulario
+      return response.redirect('back') // Back to the form
     }
 
-    // Crear nuevo payment en la base de datos
+    // Create the payment
     await Payment.create(payment)
 
     session.forget('error')
     session.forget('formData')
 
     console.log('payment created')
-    return response.redirect(`/customers/${customerId}/payments`) // Redirigir a la lista de payments
+    return response.redirect(`/customers/${customerId}/payments`) // Redirect to the index
   }
 
-  /**
-   * Show form to edit an individual payment record
-   */
-  public async edit({ params, view }: HttpContext) {
+  /** Show form to edit an individual payment record */
+  public async edit({ params, view, i18n }: HttpContext) {
     const customerId = params.customerId
+
+    // Get the customer or return 404
     const customer = await Customer.find(customerId)
-    if (!customer) return view.render('errors/404')
+    if (!customer) return view.render('pages/errors/not_found')
+
+    // Get the payment
     const payment = await Payment.query()
       .where('customer_id', params.customerId)
       .where('id', params.id)
       .first()
-
-    if (!payment) return view.render('errors/404')
+    if (!payment) return view.render('pages/errors/not_found')
 
     let out = {
       id: payment.id,
@@ -161,39 +164,38 @@ export default class PaymentsController {
       paymentMethod: payment.paymentMethod,
     }
 
-    //console.log('payment-OUT', out)
+    // Render the view
     return view.render('payments/payment', {
       customer,
       dateRange,
-      title: 'Edit Payment',
-      titleH1: 'Edit Payment Details',
+      title: i18n.t('payments.editTitle'),
+      titleH1: i18n.t('payments.editTitleH1'),
       actionUrl: `/customers/${customer.id}/payments/${payment.id}`,
-      submitValue: 'Update Payment',
+      submitValue: i18n.t('payments.editTitle'),
       payment: out,
     })
   }
 
-  /**
-   * Handle form submission for the edit action
-   */
-  public async update({ params, request, response, view, session }: HttpContext) {
+  /** Handle form submission for the edit action */
+  public async update({ params, request, response, view, session, i18n }: HttpContext) {
     const data = request.only(['paymentDate', 'paymentConfirmed', 'paymentMethod', 'amount'])
-    //console.log('data', data, params)
-    const customer = await Customer.find(params.customerId)
-    if (!customer) return view.render('errors/404')
 
-    // Buscar el payment en la base de datos
+    // Get the customer or return 404
+    const customer = await Customer.find(params.customerId)
+    if (!customer) return view.render('pages/errors/not_found')
+
+    // Search for existing payment or return 404
     const paymentDB = await Payment.query()
       .where('customer_id', params.customerId)
       .andWhere('id', params.id)
       .first()
     if (!paymentDB) {
-      session.put('error', 'Payment not found')
+      session.put('error', i18n.t('payments.errors.paymentNotFound'))
       session.put('formData', data)
-      return response.redirect('back') // Vuelve al formulario
+      return response.redirect('back') // Back to the form
     }
 
-    // asegurar que el idRuc sea unico
+    // Check that data is unique
     const existingPayment = await Payment.query()
       .where('customer_id', params.customerId)
       .andWhere('payment_date', data.paymentDate)
@@ -202,56 +204,48 @@ export default class PaymentsController {
       .andWhere('id', '!=', params.id)
       .first()
     if (existingPayment) {
-      // Agrega un mensaje de error en la sesión
-      session.put('error', `The payment for the date "${data.paymentDate}" already exists.`)
-      // Reenvía los datos a la vista
+      // Add an error message to the session
+      session.put('error', i18n.t('payments.errors.paymentExists'))
+      // Resend the form data
       session.put('formData', data)
-      return response.redirect('back') // Vuelve al formulario
+      return response.redirect('back') // Back to the form
     }
 
-    // Actualizar los datos del payment
+    // Update the payment
     await paymentDB.merge(data).save()
 
     session.forget('error')
     session.forget('formData')
 
     console.log('payment updated')
-    return response.redirect(`/customers/${customer.id}/payments/`) // Redirigir a la lista de payments
+    return response.redirect(`/customers/${customer.id}/payments/`) // Redirect to the index
   }
 
+  /** Mark a payment as confirmed */
   public async confirmPayment({ params, response }: HttpContext) {
+    // Get the customer or return 404
     const customer = await Customer.find(params.customerId)
     if (!customer) return response.notFound()
 
+    // Get the payment or return 404
     const payment = await Payment.query()
       .where('customerId', params.customerId)
       .where('id', params.id)
       .first()
     if (!payment) return response.notFound()
 
+    // Mark the payment as confirmed
     payment.paymentConfirmed = DateTime.now()
 
+    // Save the payment
     await payment.save()
 
+    // Redirect to the index
     return response.redirect(`/customers/${customer.id}/payments`)
   }
 
-  paymentMethodName(paymentMethod: number) {
-    switch (paymentMethod) {
-      case 0:
-        return 'Cash'
-      case 1:
-        return 'TDC'
-      case 2:
-        return 'TDD'
-      case 3:
-        return 'QR'
-      case 4:
-        return 'Transfer'
-      case 5:
-        return 'Bank Draft'
-      default:
-        return 'Unknown'
-    }
+  /** Return the translation for a payment method */
+  paymentMethodName(paymentMethod: number, i18n: I18n) {
+    return i18n.t(`payments.paymentMethod.${paymentMethod}`)
   }
 }

@@ -15,10 +15,13 @@ export default class Payment extends BaseModel {
   declare paymentConfirmed: DateTime | null
 
   @column()
-  declare paymentMethod: number // 0 = cash, 1 = TDC, 2 = TDD, 3 = QR, 4 = transfer, 5 = bank draft
+  declare paymentMethod: number // 0 = Cash, 1 = Transfer, 2 = Debit Card, 3 = Credit Card, 4 = Bank Draft
 
   @column()
   declare amount: number
+
+  @column()
+  declare description: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
